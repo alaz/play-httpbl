@@ -1,0 +1,16 @@
+logs
+project/project
+project/target
+target
+tmp
+.history
+dist/
+.classpath
+.project
+.settings
+.cache
+.idea
+.idea_modules
+.DS_Store
+.deploy
+RUNNING_PID
