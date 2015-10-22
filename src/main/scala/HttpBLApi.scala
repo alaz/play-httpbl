@@ -22,7 +22,7 @@ object HttpBLApi {
       val ip = sanitizeIP(remoteAddress)
 
       val addr = InetAddress.getByName(ip)
-      if (addr.isAnyLocalAddress)
+      if (addr.isAnyLocalAddress || addr.isSiteLocalAddress || addr.isLoopbackAddress || addr.isLinkLocalAddress)
         // TODO: Makes no sense to request Http:BL for any kind of local address. Anyway should be configurable.
         None
       else
