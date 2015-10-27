@@ -1,0 +1,16 @@
+sudo: false
+language: scala
+scala:
+- 2.11.7
+jdk:
+- oraclejdk7
+script:
+- sbt -Dfile.encoding=UTF8 -no-colors ++$TRAVIS_SCALA_VERSION test
+cache:
+  directories:
+  - $HOME/.ivy2/cache
+  - $HOME/.sbt/boot/
+notifications:
+  hipchat:
+    rooms:
+      secure: PodELOwbx1JQX63iOtWLs+n4UljRI4zuHglW3jwRzPys0KhCvxjS7YHksmc0s6EJFT1jAZdCjLC4++zn1MeJPyt7ZxGFJ3Ze+rSWdMaHlfeCS7q8u4fqR7YphBi0FxOtQkkJTZ10WrWZaUcYwR/dDr35ZCrHNfQzHkNWs6swtJA=
