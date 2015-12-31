@@ -42,7 +42,7 @@ pomExtra := <xml:group>
       <id>alaz</id>
       <email>azarov@osinka.com</email>
       <name>Alexander Azarov</name>
-      <timezone>+4</timezone>
+      <timezone>+2</timezone>
     </developer>
   </developers>
   <scm>
