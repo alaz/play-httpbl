@@ -1,7 +1,7 @@
 package com.osinka.play.httpbl
 
 import java.net.InetAddress
-import scala.concurrent.Future
+import scala.concurrent.{Future, blocking}
 import play.api.libs.concurrent.Execution.Implicits._
 
 import com.osinka.httpbl.HttpBL
@@ -21,12 +21,14 @@ object HttpBLApi {
     Future {
       val ip = sanitizeIP(remoteAddress)
 
-      val addr = InetAddress.getByName(ip)
-      if (addr.isAnyLocalAddress || addr.isSiteLocalAddress || addr.isLoopbackAddress || addr.isLinkLocalAddress)
+      blocking {
+        val addr = InetAddress.getByName(ip)
+        if (addr.isAnyLocalAddress || addr.isSiteLocalAddress || addr.isLoopbackAddress || addr.isLinkLocalAddress)
         // TODO: Makes no sense to request Http:BL for any kind of local address. Anyway should be configurable.
-        None
-      else
-        api flatMap { _.apply(addr) }
+          None
+        else
+          api flatMap { _.apply(addr) }
+      }
     }
 
   // Play 2.3.x may give us plain `X-Forwarded-For`
