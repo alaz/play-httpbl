@@ -21,6 +21,8 @@ libraryDependencies in ThisBuild ++= Seq(
 
 scalacOptions ++= List("-deprecation", "-unchecked", "-feature")
 
+resolvers += Resolvers.typesafeRepo("releases")
+
 credentials += Credentials(Path.userHome / ".ivy2/credentials_sonatype")
 
 pomIncludeRepository := { x => false }
