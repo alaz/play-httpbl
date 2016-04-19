@@ -1,9 +1,10 @@
 package com.osinka.play.httpbl
 
-import scala.concurrent.Future
-import org.slf4j.LoggerFactory
+import scala.concurrent.{Future, Promise}
+import scala.util.Try
 import play.api.libs.concurrent.Execution.Implicits._
 import play.api.mvc._
+import org.slf4j.LoggerFactory
 
 import com.osinka.httpbl.HttpBL
 
@@ -16,23 +17,16 @@ object HttpBLFilter extends Filter {
 
   def apply(nextFilter: (RequestHeader) => Future[Result])(requestHeader: RequestHeader): Future[Result] = {
     val id = requestHeader.id
+    val promise = Promise[Option[HttpBL.Response]]()
+    HttpBLRequest.register(id, promise.future)
 
-    val httpblReq =
-      HttpBLApi.lookup(requestHeader.remoteAddress) recover {
-        // do not let spill the failure to filter, we don't want our app to return 500
-        case ex =>
-          logger.warn(s"Failed to get Http:BL for ${requestHeader.remoteAddress} $requestHeader", ex)
-          None
-      }
-    HttpBLRequest.register(id, httpblReq)
-
-    val f = nextFilter(requestHeader) zip httpblReq
+    val f = nextFilter(requestHeader)
     f.onComplete { _ => HttpBLRequest.release(id) }
 
-    f map {
-      case (result, httpbl) =>
-        result.withHeaders(HTTPBL_HEADER -> headerValue(httpbl))
-    }
+    val httpbl = Try(HttpBLApi.lookup(requestHeader.remoteAddress))
+    promise.complete(httpbl)
+
+    f map { _.withHeaders(HTTPBL_HEADER -> headerValue(httpbl.getOrElse(None))) }
   }
 
   def headerValue(response: Option[HttpBL.Response]) =

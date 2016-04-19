@@ -20,7 +20,9 @@ object HttpBLRequest {
    * @see https://www.playframework.com/documentation/2.4.x/HTTPServer#Configure-trusted-proxies
    */
   def apply(requestHeader: RequestHeader): Future[Option[HttpBL.Response]] =
-    Option(registry.get(requestHeader.id)) getOrElse Future.successful(None)
+    registry.getOrDefault(requestHeader.id,
+      scala.sys.error(s"Cannot find HttpBL result for request ID ${requestHeader.id}. Is HttpBL filter configured in Global?")
+    )
   
   def register(id: Long, f: Future[Option[HttpBL.Response]]): Unit = {
     registry.put(id, f)
