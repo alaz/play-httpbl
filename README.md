@@ -6,16 +6,10 @@ suspicious IP addresses (e.g. spammers, email harvesters)
 
 ## How to use it?
 
-Just like any other Play Framework plugin (see below "Installation"). Do not
+Just like any other Play Framework plugin. Do not
 forget to specify your Project Honeypot API key in the application configuration.
 
-Then, install the filter:
-
-```
-object Global extends WithFilters(HttpBLFilter)
-```
-
-and all the app responses will have `X-HttpBL` header with e.g. `spammer` or
+Then, install the filter. All the app responses will have `X-HttpBL` header with e.g. `spammer` or
 `searchengine:1` (ID means one of search engines Project Honeypot recognizes)
 or `none` (if this IP isn't listed), etc.
 
@@ -40,16 +34,4 @@ In SBT:
 
 ```
 libararyDependencies += "com.osinka.play" %% "play-httpbl" % "2.0.0-SNAPSHOT"
-```
-
-In `play.plugins`:
-
-```
-9000:com.osinka.play.httpbl.HttpBLPlugin
-```
-
-In `application.conf`:
-
-```
-httpbl.apiKey = "abcdef"
 ```
