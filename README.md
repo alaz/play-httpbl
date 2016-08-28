@@ -1,6 +1,6 @@
 ## What is it?
 
-This is a Play Framework 2.3.x plugin to test the client's IP address
+This is a Play Framework 2.5.x plugin to test the client's IP address
 against [Project Honeypot](http://www.projecthoneypot.org/) database of
 suspicious IP addresses (e.g. spammers, email harvesters)
 
@@ -39,7 +39,7 @@ from [HttpBL](https://github.com/osinka/httpbl) library.
 In SBT:
 
 ```
-libararyDependencies += "com.osinka.play" %% "play-httpbl" % "1.0.0-SNAPSHOT"
+libararyDependencies += "com.osinka.play" %% "play-httpbl" % "2.0.0-SNAPSHOT"
 ```
 
 In `play.plugins`:
